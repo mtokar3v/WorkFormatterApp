@@ -1,13 +1,12 @@
-﻿using Formatter.Factories.BodyElementFactory;
-using NPOI.OpenXmlFormats.Wordprocessing;
+﻿using Formatter.Builders;
+using Formatter.Extensions;
 using NPOI.XWPF.UserModel;
-using System.Xml;
 
 namespace Formatter.FormatItems
 {
     internal class TableFormatter : BaseFormatter
     {
-        private int _tableCounter = 0;
+        private int _totalTableCounter = 0;
 
         private readonly HashSet<string> _tableHeaders = new HashSet<string>
         {
@@ -24,18 +23,20 @@ namespace Formatter.FormatItems
         {
             for (var i = 0; i < _elements.Count; i++)
             {
-                if (_elements.ElementAt(i).ElementType != BodyElementType.TABLE)
+                var table = _elements.ElementAt(i) as XWPFTable;
+
+                if (table == null)
                     continue;
 
                 var tableHeader = _elements
                     .GetFirstPreviousNonEmptyParagraph(i)?
-                    .GetParagraphText();
+                    .ParagraphText;
 
                 //TO DO: Remove empty fields above of Table
 
-                if(string.IsNullOrEmpty(tableHeader))
+                if (string.IsNullOrEmpty(tableHeader) || !IsHeader(tableHeader))
                 {
-                    AddTableHeader(i);
+                    AddTableHeader(table, i);
                 }
 
             }
@@ -43,15 +44,32 @@ namespace Formatter.FormatItems
             return _changes;
         }
 
-        private void AddTableHeader(int tableIndex)
+        private bool IsHeader(string? text)
         {
-            var tableHeaderText = $"Таблица {++_tableCounter} - Название";
-            
+            if (string.IsNullOrEmpty(text))
+                return false;
 
-            var tableHeaderParagraph = new ParagraphFactory(tableHeaderText, _document).GetBody();
+            return text
+                .Split()
+                .ToList()
+                .Any(s => _tableHeaders.Contains(s));
+        }
 
-            var tableHeaderIndex = tableIndex - 1 /*> 0 ? tableIndex - 1 : 0*/;
-            _document.SetParagraph((XWPFParagraph)tableHeaderParagraph, tableHeaderIndex);
+        private void AddTableHeader(XWPFTable table, int elementIndex)
+        {
+            var tableHeaderText = $"Таблица {++_totalTableCounter} - Название";
+
+            var tableHeaderParagraph = new ParagraphBuilder(_document)
+                .WithCommonTextSettings(tableHeaderText)
+                .WithDangerFontColor()
+                .Build();
+            //  <summary>
+            //  Its better that was be, but insertParagraph works
+            //  incorrect with mix of tables and paragraphs
+            //  </summary>
+            var tableHeaderIndex = elementIndex - 1 > 0 ? elementIndex - 1 : 0;
+            _document.InsertParagraph(tableHeaderParagraph, tableHeaderIndex);
+            _changes++;
         }
     }
 }
