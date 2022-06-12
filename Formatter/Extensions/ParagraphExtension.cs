@@ -4,6 +4,16 @@ namespace Formatter.Extensions
 {
     public static class ParagraphExtension
     {
+        public static Run GetOrCreateRun(this Paragraph p)
+        {
+            if (p.Elements<Run>().Count() == 0)
+            {
+                p.PrependChild(new Run());
+            }
+
+            return p.GetFirstChild<Run>()!;
+        }
+
         public static ParagraphProperties GetOrCreateParagraphProperties(this Paragraph p)
         {
             if (p.Elements<ParagraphProperties>().Count() == 0)

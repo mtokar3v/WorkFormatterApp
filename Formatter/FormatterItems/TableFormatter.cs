@@ -11,9 +11,10 @@ namespace Formatter.FormatterItems
         private readonly HashSet<string> _tableHeaders = new HashSet<string>
         {
             "Таблица",
-            "Табл.",
+            "Табл",
             "Table"
         };
+        private int _tableTotalCount = 0;
 
         public TableFormatter(Body body) : base(body) { }
 
@@ -25,25 +26,26 @@ namespace Formatter.FormatterItems
 
             foreach (var table in tables)
             {
+                _tableTotalCount++;
                 var tableHeader = GetPreviousNonEmptyParagraphInParagraphSubsequence(table);
 
                 if (IsHeader(tableHeader?.InnerText))
                 {
                     if (!IsCorrectHeaderSpelling(tableHeader?.InnerText))
                     {
-                        CorrectHeaderSpelling(tableHeader!, tables.IndexOf(table) + 1);
+                        CorrectHeaderSpelling(tableHeader!);
                     }
                 }
                 else
                 {
-                    AddTableHeader(table, tables.IndexOf(table) + 1);
+                    AddTableHeader(table);
                 }
             }
         }
 
-        private void AddTableHeader(OpenXmlElement table, int tableNumber)
+        private void AddTableHeader(OpenXmlElement table)
         {
-            var tableHeaderText = $"Таблица {tableNumber} - Название";
+            var tableHeaderText = $"Таблица {_tableTotalCount} - Название";
 
             var tableHeaderParagraph = new ParagraphBuilder(tableHeaderText)
                 .WithStyle(Constants.Style.MainTextStyleId)
@@ -52,23 +54,30 @@ namespace Formatter.FormatterItems
             _body.InsertBefore(tableHeaderParagraph, table);
         }
 
-        private void CorrectHeaderSpelling(Paragraph p, int tableNumber)
+        private void CorrectHeaderSpelling(Paragraph p)
         {
             var text = p.InnerText;
             if (string.IsNullOrEmpty(text))
                 return;
-
-            var pattern = @$"[^({string.Join('|', _tableHeaders)})][а-яёА-ЯЁ0-9 ,.;()\[\]]+[^.;,]";
+            
+            //To do: update regex to get tableName for effective
+            var pattern = @$"[^{string.Join('|', _tableHeaders)}\s+\d+\s+][\w\W]+[^.;,]";
             var matches = Regex.Matches(text, pattern);
 
             var (tableName, isCorrect) = matches.Count() switch 
             {
-                var c when c == 1 || c == 2 => (matches.ElementAt(c - 1).Value, true),
+                var c when c > 0 => (matches.ElementAt(c - 1).Value, true),
                 _ => ("Название", false)
             };
 
-            var tableHeaderText = $"Таблица {tableNumber} - {tableName}";
-            p.GetFirstChild<Run>()!.GetFirstChild<Text>()!.Text = tableHeaderText;
+            tableName = tableName
+                .ToLower()
+                .Trim(' ', '-', '—', '_', ':', ';', '.')
+                .FirstCharToUpper();
+            var tableHeaderText = $"Таблица {_tableTotalCount} - {tableName}";
+
+            p.RemoveAllChildren();
+            p.GetOrCreateRun().GetOrCreateText().Text = tableHeaderText;
 
             if(!isCorrect)
             {
@@ -81,7 +90,7 @@ namespace Formatter.FormatterItems
             if (string.IsNullOrEmpty(text))
                 return false;
 
-            var pattern = @"Таблица\s\d+\s-\s\w+[^.;,]";
+            var pattern = @$"Таблица\s{_tableTotalCount}\s-\s\w+[^.;,]";
             return Regex.IsMatch(text, pattern);
         }
 
@@ -90,10 +99,12 @@ namespace Formatter.FormatterItems
             if (string.IsNullOrEmpty(text))
                 return false;
 
+            var pattern = string.Join('|', _tableHeaders);
+
             return text
                 .Split()
                 .ToList()
-                .Any(s => _tableHeaders.Contains(s, StringComparer.OrdinalIgnoreCase));
+                .Any(s => Regex.Matches(s, pattern, RegexOptions.IgnoreCase).Count() != 0);
         }
 
         private Paragraph? GetPreviousNonEmptyParagraphInParagraphSubsequence(OpenXmlElement element)
