@@ -1,10 +1,11 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Formatter;
 using Formatter.Builders;
 using Formatter.Extensions;
 using Formatter.Factories;
+using Formatter.FormatterItems;
+using System.Text.RegularExpressions;
 
 namespace WorkFormatter.Program
 {
@@ -12,7 +13,7 @@ namespace WorkFormatter.Program
     {
         public static void Main()
         {
-            var path = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"NewTestDocx.docx");
+            var path = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"simpleTable2.docx");
             var testNumber = new DirectoryInfo(Constants.NeedRemoveToConfig.PathToTestFile).GetFiles().Length - 1;
             var pathForEditedFile = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"TableTesting_{testNumber}_{Guid.NewGuid()}.docx");
 
@@ -22,13 +23,11 @@ namespace WorkFormatter.Program
 
             var styleDefinitionsPart = document.GetOrCreateStyleDefinitionsPart();
             var styles = styleDefinitionsPart.GetOrCreateStyles();
-            styles.Append(new CommonLowercaseParagraphFactory().Create());
+            styles.Append(new CommonLowercaseParagraphStyleFactory().Create());
+            styles.Append(new DangerParagraphStyleFactory().Create());
 
-            var p = new ParagraphBuilder("SomeText")
-                .WithStyle(Constants.Style.MainTextStyleId)
-                .Build();
-
-            document!.MainDocumentPart!.Document.Body!.AppendChild(p);
+            var tf = new TableFormatter(document!.MainDocumentPart!.Document.Body!);
+            tf.Execute();
         }
     }
 } 

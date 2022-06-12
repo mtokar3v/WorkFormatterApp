@@ -4,13 +4,27 @@ namespace Formatter.Factory
 {
     public abstract class ParagraphStyleFactory
     {
-        protected readonly string _styleId;
-        protected readonly string _styleName;
+        protected readonly Style style;
 
         public ParagraphStyleFactory(string styleId, string styleName)
         {
-            _styleId = styleId;
-            _styleName = styleName;
+            style = new Style
+            {
+                Type = StyleValues.Paragraph,
+                StyleId = styleId,
+                CustomStyle = true,
+                Default = false,
+                StyleName = new StyleName { Val = styleName },
+                StyleRunProperties = new StyleRunProperties
+                {
+                    RunFonts = new RunFonts()
+                    {
+                        Ascii = Constants.Font.DefaultFont,
+                        HighAnsi = Constants.Font.DefaultFont,
+                        ComplexScript = Constants.Font.DefaultFont
+                    }
+                }
+            };
         }
 
         public abstract Style Create();

@@ -29,6 +29,9 @@
         {
             public const string MainTextStyleName = "Main Text";
             public const string MainTextStyleId = "MainText";
+            
+            public const string DangerTextStyleName = "Dander Text";
+            public const string DanderTextStyleId = "DanderText";
         }
 
         public static class NeedRemoveToConfig
