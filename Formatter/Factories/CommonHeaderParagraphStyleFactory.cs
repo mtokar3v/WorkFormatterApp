@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using Formatter.Factory;
+using Formatter.Utils;
 
 namespace Formatter.Factories
 {
@@ -11,7 +12,7 @@ namespace Formatter.Factories
 
         public override Style Create()
         {
-            style.StyleRunProperties!.Append(new FontSize() { Val = (2 * Constants.Font.HeaderTextFontSize).ToString() });
+            style.StyleRunProperties!.Append(new FontSize() { Val = NotationConverter.ToHpsMeasureFontSize(Constants.Font.HeaderTextFontSize) });
             style.StyleRunProperties!.Append(new Color() { Val = Constants.Font.DefaultFontColor });
             style.StyleRunProperties!.Append(new Bold());
 

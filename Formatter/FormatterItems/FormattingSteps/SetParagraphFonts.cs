@@ -4,9 +4,9 @@ using Formatter.Utils;
 
 namespace Formatter.FormatterItems.FormattingSteps;
 
-public class FontFormatting : BaseFormatter
+public class SetParagraphFonts : BaseFormatter
 {
-    public FontFormatting(Body body) : base(body) { }
+    public SetParagraphFonts(Body body) : base(body) { }
     public override void Execute()
     {
         Action<Paragraph> formatParagraph = (p) =>
@@ -27,6 +27,14 @@ public class FontFormatting : BaseFormatter
             .ToList()
             .ForEach(p => formatParagraph(p));
 
-        //Need to add table text handing
+        _body.Elements<Table>()
+            .ToList()
+            .ForEach(t => t.Elements<TableRow>()
+            .ToList()
+            .ForEach(tr => tr.Elements<TableCell>()
+            .ToList()
+            .ForEach(tc => tc.Elements<Paragraph>()
+            .ToList()
+            .ForEach(p => formatParagraph(p)))));
     }
 }

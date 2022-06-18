@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using Formatter.Factory;
+using Formatter.Utils;
 
 namespace Formatter.Factories
 {
@@ -12,7 +13,7 @@ namespace Formatter.Factories
         public override Style Create()
         {
             //Need to add text position : justify , line and paragraph spacing 
-            style.StyleRunProperties!.Append(new FontSize() { Val = (2 * Constants.Font.MainTextFontSize).ToString() });
+            style.StyleRunProperties!.Append(new FontSize() { Val = NotationConverter.ToHpsMeasureFontSize(Constants.Font.MainTextFontSize) });
             style.StyleRunProperties!.Append(new Color() { Val = Constants.Font.DefaultFontColor });
 
             return style;

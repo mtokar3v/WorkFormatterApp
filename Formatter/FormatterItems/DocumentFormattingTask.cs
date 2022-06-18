@@ -28,12 +28,13 @@ public class DocumentFormattingTask
             Console.WriteLine(ex.Message + '\n' + ex.StackTrace);
             return FormattingTaskStatus.Fail;
         }
-        
     }
 
     private void SetFormattingSteps()
     {
-        _formattingSteps.Add(new TableFormatter(_body));
-        _formattingSteps.Add(new FontFormatting(_body));
+        _formattingSteps.Add(new SetDocumentMargins(_body));
+        _formattingSteps.Add(new DeleteEmptyParagraphs(_body));
+        _formattingSteps.Add(new FormatTableHeaders(_body));
+        _formattingSteps.Add(new SetParagraphFonts(_body));
     }
 }

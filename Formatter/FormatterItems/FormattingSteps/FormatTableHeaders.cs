@@ -7,11 +7,11 @@ using System.Text.RegularExpressions;
 
 namespace Formatter.FormatterItems
 {
-    public class TableFormatter : BaseFormatter
+    public class FormatTableHeaders : BaseFormatter
     {
         private int _tableTotalCount = 0;
 
-        public TableFormatter(Body body) : base(body) { }
+        public FormatTableHeaders(Body body) : base(body) { }
 
         //Need to add title when table going to the next page
         public override void Execute()
@@ -55,12 +55,11 @@ namespace Formatter.FormatterItems
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var tableName = TextTypeChecker.GetTableName(text);
+            var tableName = TextTypeChecker.GetTableName(text)
+                                ?.ToLower()
+                                .Trim(Constants.Text.SeparateSymbols)
+                                .FirstCharToUpper();
 
-            tableName = tableName
-                ?.ToLower()
-                .Trim(Constants.Text.SeparateSymbols)
-                .FirstCharToUpper();
             var tableHeaderText = $"Таблица {_tableTotalCount} - {tableName ?? "Название"}";
 
             p.RemoveAllChildren();

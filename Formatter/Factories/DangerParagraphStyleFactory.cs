@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using Formatter.Factory;
+using Formatter.Utils;
 
 namespace Formatter.Factories
 {
@@ -8,7 +9,7 @@ namespace Formatter.Factories
         public DangerParagraphStyleFactory() : base(Constants.Style.DanderTextStyleId, Constants.Style.DangerTextStyleName) { }
         public override Style Create()
         {
-            style.StyleRunProperties!.Append(new FontSize() { Val = (2 * Constants.Font.MainTextFontSize).ToString() });
+            style.StyleRunProperties!.Append(new FontSize() { Val = NotationConverter.ToHpsMeasureFontSize(Constants.Font.MainTextFontSize) });
             style.StyleRunProperties!.Append(new Color() { Val = Constants.Font.DangerFontColor });
             style.StyleRunProperties!.Append(new Italic());
 
