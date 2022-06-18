@@ -2,11 +2,11 @@
 
 namespace Formatter.Factory
 {
-    public abstract class ParagraphStyleFactory
+    public abstract class BaseParagraphStyleFactory
     {
         protected readonly Style style;
 
-        public ParagraphStyleFactory(string styleId, string styleName)
+        public BaseParagraphStyleFactory(string styleId, string styleName)
         {
             style = new Style
             {

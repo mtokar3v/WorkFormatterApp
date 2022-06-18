@@ -27,12 +27,22 @@
 
         public static class Style
         {
-            public const string MainTextStyleName = "Main Text";
-            public const string MainTextStyleId = "MainText";
+            public const string CommonTextStyleName = "Main Text";
+            public const string CommonTextStyleId = "MainText";
             
             public const string DangerTextStyleName = "Dander Text";
             public const string DanderTextStyleId = "DanderText";
+
+            public const string HeaderTextStyleName = "Header Text";
+            public const string HeaderTextStyleId = "HeaderText";
         }
+
+        public static class Text
+        {
+            public static readonly char[] SeparateSymbols = { ' ', ',', '.', ';', ':', '!', '?', '(', ')', '[', ']', '\'', '\"', '-', '—', '_' };
+            public static readonly char[] EndingSymbols = { '.', ';', '!', '?' };
+        }
+
 
         public static class NeedRemoveToConfig
         {

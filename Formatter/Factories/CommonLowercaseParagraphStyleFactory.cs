@@ -3,9 +3,9 @@ using Formatter.Factory;
 
 namespace Formatter.Factories
 {
-    public class CommonLowercaseParagraphStyleFactory : ParagraphStyleFactory
+    public class CommonLowercaseParagraphStyleFactory : BaseParagraphStyleFactory
     {
-        public CommonLowercaseParagraphStyleFactory() : base(Constants.Style.MainTextStyleId, Constants.Style.MainTextStyleName)
+        public CommonLowercaseParagraphStyleFactory() : base(Constants.Style.CommonTextStyleId, Constants.Style.CommonTextStyleName)
         {
         }
 

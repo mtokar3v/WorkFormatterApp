@@ -3,7 +3,7 @@ using Formatter.Factory;
 
 namespace Formatter.Factories
 {
-    internal class DangerParagraphStyleFactory : ParagraphStyleFactory
+    internal class DangerParagraphStyleFactory : BaseParagraphStyleFactory
     {
         public DangerParagraphStyleFactory() : base(Constants.Style.DanderTextStyleId, Constants.Style.DangerTextStyleName) { }
         public override Style Create()
