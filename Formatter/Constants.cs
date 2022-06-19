@@ -32,13 +32,13 @@
         public static class Style
         {
             public const string CommonTextStyleName = "Main Text";
-            public const string CommonTextStyleId = "MainText";
+            public static readonly string CommonTextStyleId = Guid.NewGuid().ToString();
             
             public const string DangerTextStyleName = "Dander Text";
-            public const string DanderTextStyleId = "DanderText";
+            public static readonly string DanderTextStyleId = Guid.NewGuid().ToString();
 
             public const string HeaderTextStyleName = "Header Text";
-            public const string HeaderTextStyleId = "HeaderText";
+            public static readonly string HeaderTextStyleId = Guid.NewGuid().ToString();
         }
 
         public static class Text

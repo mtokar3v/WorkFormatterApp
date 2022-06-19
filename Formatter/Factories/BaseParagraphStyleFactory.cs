@@ -5,9 +5,12 @@ namespace Formatter.Factory
     public abstract class BaseParagraphStyleFactory
     {
         protected readonly Style style;
+        protected readonly ParagraphProperties pPr;
 
         public BaseParagraphStyleFactory(string styleId, string styleName)
         {
+            pPr = new ParagraphProperties();
+
             style = new Style
             {
                 Type = StyleValues.Paragraph,
@@ -17,6 +20,7 @@ namespace Formatter.Factory
                 StyleName = new StyleName { Val = styleName },
                 StyleRunProperties = new StyleRunProperties
                 {
+                    VerticalTextAlignment = new VerticalTextAlignment() { Val = VerticalPositionValues.Baseline },
                     RunFonts = new RunFonts()
                     {
                         Ascii = Constants.Font.DefaultFont,

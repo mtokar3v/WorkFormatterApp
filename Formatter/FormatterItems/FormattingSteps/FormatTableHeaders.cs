@@ -22,7 +22,7 @@ namespace Formatter.FormatterItems
             foreach (var table in tables)
             {
                 _tableTotalCount++;
-                var tableHeader = GetPreviousNonEmptyParagraphInParagraphSubsequence(table);
+                var tableHeader = GetPreviousParagraphInParagraphSequence(table);
 
                 if (TextTypeChecker.IsTableHeader(tableHeader?.InnerText))
                 {
@@ -80,7 +80,7 @@ namespace Formatter.FormatterItems
             return Regex.IsMatch(text, pattern);
         }
 
-        private Paragraph? GetPreviousNonEmptyParagraphInParagraphSubsequence(OpenXmlElement element)
+        private Paragraph? GetPreviousParagraphInParagraphSequence(OpenXmlElement element)
         {
             var curElementIndex = _body
                 .Elements()
@@ -90,7 +90,7 @@ namespace Formatter.FormatterItems
             return _body.Elements()
                 .Take(curElementIndex)
                 .Reverse()
-                .FirstNonEmptyParagraphInParagraphSubsequence();
+                .FirstOrDefault() as Paragraph;
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using Formatter;
-using Formatter.Builders;
 using Formatter.Extensions;
 using Formatter.Factories;
 using Formatter.FormatterItems;
-using System.Text.RegularExpressions;
 
 namespace WorkFormatter.Program;
 
