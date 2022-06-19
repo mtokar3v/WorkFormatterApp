@@ -6,7 +6,7 @@ namespace Formatter.FormatterItems;
 public class DocumentFormattingTask
 {
     private readonly Body _body;
-    private readonly List<BaseFormatter> _formattingSteps = new List<BaseFormatter>();
+    private readonly List<BaseFormatterStep> _formattingSteps = new List<BaseFormatterStep>();
     public DocumentFormattingTask(Body body)
     {
         _body = body;
@@ -32,9 +32,17 @@ public class DocumentFormattingTask
 
     private void SetFormattingSteps()
     {
-        _formattingSteps.Add(new SetDocumentMargins(_body));
-        _formattingSteps.Add(new DeleteEmptyParagraphs(_body));
-        _formattingSteps.Add(new FormatTableHeaders(_body));
-        _formattingSteps.Add(new SetParagraphFonts(_body));
+        //  Preparation
+        _formattingSteps.Add(new DeleteEmptyParagraphsStep(_body));
+
+        //  No matter the order 
+        _formattingSteps.Add(new SetDocumentMarginsStep(_body));
+        _formattingSteps.Add(new SetFooterStep(_body));
+
+        //  General haning
+        _formattingSteps.Add(new FormatTableHeadersStep(_body));
+
+        //  After all handing
+        _formattingSteps.Add(new SetParagraphFontsStep(_body));
     }
 }

@@ -31,9 +31,12 @@
 
         public static class Style
         {
-            public const string CommonTextStyleName = "Main Text";
-            public static readonly string CommonTextStyleId = Guid.NewGuid().ToString();
-            
+            public const string CommonBothTextStyleName = "Main Text Both Justification";
+            public static readonly string CommonBothTextStyleId = Guid.NewGuid().ToString();
+
+            public const string CommonCenterTextStyleName = "Main Text Center Justification";
+            public static readonly string CommonCenterTextStyleId = Guid.NewGuid().ToString();
+
             public const string DangerTextStyleName = "Dander Text";
             public static readonly string DanderTextStyleId = Guid.NewGuid().ToString();
 

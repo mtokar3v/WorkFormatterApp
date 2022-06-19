@@ -1,13 +1,12 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Formatter.Extensions;
 using Formatter.Factory;
 using Formatter.Utils;
 
-namespace Formatter.Factories
+namespace Formatter.Factories.Lowercase
 {
-    public class CommonLowercaseParagraphStyleFactory : BaseParagraphStyleFactory
+    public abstract class LowercaseParagraphStyleFactory : BaseParagraphStyleFactory
     {
-        public CommonLowercaseParagraphStyleFactory() : base(Constants.Style.CommonTextStyleId, Constants.Style.CommonTextStyleName)
+        public LowercaseParagraphStyleFactory(string styleId, string styleName) : base(styleId, styleName)
         {
         }
 
@@ -15,10 +14,6 @@ namespace Formatter.Factories
         {
             style.StyleRunProperties!.Append(new FontSize() { Val = NotationConverter.ToHpsMeasureFontSize(Constants.Font.MainTextFontSize) });
             style.StyleRunProperties!.Append(new Color() { Val = Constants.Font.DefaultFontColor });
-
-            pPr.AppendOrChangeSingleProperty(new Justification() { Val = JustificationValues.Both });
-            style.AppendOrChangeSingleProperty(pPr);
-
             return style;
         }
     }

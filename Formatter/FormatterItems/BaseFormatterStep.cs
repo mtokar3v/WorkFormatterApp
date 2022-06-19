@@ -3,11 +3,11 @@ using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Formatter.FormatterItems
 {
-    public abstract class BaseFormatter
+    public abstract class BaseFormatterStep
     {
         protected readonly Body _body;
 
-        public BaseFormatter(Body body)
+        public BaseFormatterStep(Body body)
         {
             _body = body;
         }

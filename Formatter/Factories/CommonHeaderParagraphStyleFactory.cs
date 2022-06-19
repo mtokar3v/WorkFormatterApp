@@ -4,7 +4,7 @@ using Formatter.Utils;
 
 namespace Formatter.Factories
 {
-    internal class CommonHeaderParagraphStyleFactory : BaseParagraphStyleFactory
+    public class CommonHeaderParagraphStyleFactory : BaseParagraphStyleFactory
     {
         public CommonHeaderParagraphStyleFactory() : base(Constants.Style.HeaderTextStyleId, Constants.Style.HeaderTextStyleName)
         {

@@ -7,11 +7,11 @@ using System.Text.RegularExpressions;
 
 namespace Formatter.FormatterItems
 {
-    public class FormatTableHeaders : BaseFormatter
+    public class FormatTableHeadersStep : BaseFormatterStep
     {
         private int _tableTotalCount = 0;
 
-        public FormatTableHeaders(Body body) : base(body) { }
+        public FormatTableHeadersStep(Body body) : base(body) { }
 
         //Need to add title when table going to the next page
         public override void Execute()
@@ -24,7 +24,7 @@ namespace Formatter.FormatterItems
                 _tableTotalCount++;
                 var tableHeader = GetPreviousParagraphInParagraphSequence(table);
 
-                if (TextTypeChecker.IsTableHeader(tableHeader?.InnerText))
+                if (TextElementHelper.IsTableHeader(tableHeader?.InnerText))
                 {
                     if (!IsCorrectHeaderSpelling(tableHeader?.InnerText))
                     {
@@ -43,7 +43,7 @@ namespace Formatter.FormatterItems
             var tableHeaderText = $"Таблица {_tableTotalCount} - Название";
 
             var tableHeaderParagraph = new ParagraphBuilder(tableHeaderText)
-                .WithStyle(Constants.Style.CommonTextStyleId)
+                .WithStyle(Constants.Style.CommonBothTextStyleId)
                 .Build();
 
             _body.InsertBefore(tableHeaderParagraph, table);
@@ -55,7 +55,7 @@ namespace Formatter.FormatterItems
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var tableName = TextTypeChecker.GetTableName(text)
+            var tableName = TextElementHelper.GetTableName(text)
                                 ?.ToLower()
                                 .Trim(Constants.Text.SeparateSymbols)
                                 .FirstCharToUpper();

@@ -1,39 +1,44 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+namespace Formatter.Extensions;
 
-namespace Formatter.Extensions
+public static class ParagraphExtension
 {
-    public static class ParagraphExtension
+    public static Run GetOrCreateRun(this Paragraph p)
     {
-        public static Run GetOrCreateRun(this Paragraph p)
-        {
-            if (p.Elements<Run>().Count() == 0)
-            {
-                p.PrependChild(new Run());
-            }
+        if (p == null) throw new NullReferenceException(nameof(p));
 
-            return p.GetFirstChild<Run>()!;
+        if (p.Elements<Run>().Count() == 0)
+        {
+            p.PrependChild(new Run());
         }
 
-        public static ParagraphProperties GetOrCreateParagraphProperties(this Paragraph p)
-        {
-            if (p.Elements<ParagraphProperties>().Count() == 0)
-            {
-                p.PrependChild(new ParagraphProperties());
-            }
+        return p.GetFirstChild<Run>()!;
+    }
 
-            return p.ParagraphProperties!;
+    public static ParagraphProperties GetOrCreateParagraphProperties(this Paragraph p)
+    {
+        if (p == null) throw new NullReferenceException(nameof(p));
+
+        if (p.Elements<ParagraphProperties>().Count() == 0)
+        {
+            p.PrependChild(new ParagraphProperties());
         }
 
-        public static ParagraphStyleId GetOrCreateParagraphStyleId(this Paragraph p)
+        return p.ParagraphProperties!;
+    }
+
+    public static ParagraphStyleId GetOrCreateParagraphStyleId(this Paragraph p)
+    {
+        if (p == null) throw new NullReferenceException(nameof(p));
+
+        var pPr = p.GetOrCreateParagraphProperties();
+
+        if(pPr.ParagraphStyleId == null)
         {
-            var pPr = p.GetOrCreateParagraphProperties();
-
-            if(pPr.ParagraphStyleId == null)
-            {
-                pPr.ParagraphStyleId = new ParagraphStyleId();
-            }
-
-            return pPr.ParagraphStyleId;
+            pPr.ParagraphStyleId = new ParagraphStyleId();
         }
+
+        return pPr.ParagraphStyleId;
     }
 }
+

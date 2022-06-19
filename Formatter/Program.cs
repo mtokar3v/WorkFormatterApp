@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using Formatter;
 using Formatter.Extensions;
 using Formatter.Factories;
+using Formatter.Factories.Lowercase;
 using Formatter.FormatterItems;
 
 namespace WorkFormatter.Program;
@@ -21,7 +22,8 @@ public class Program
 
         var styleDefinitionsPart = document.GetOrCreateStyleDefinitionsPart();
         var styles = styleDefinitionsPart.GetOrCreateStyles();
-        styles.Append(new CommonLowercaseParagraphStyleFactory().Create());
+        styles.Append(new BothLowercaseParagraphStyleFactory().Create());
+        styles.Append(new CenterLowercaseParagraphStyleFactory().Create());
         styles.Append(new DangerParagraphStyleFactory().Create());
         styles.Append(new CommonHeaderParagraphStyleFactory().Create());
 

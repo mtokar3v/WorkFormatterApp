@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 namespace Formatter.Utils;
 
-public static class TextTypeChecker
+public static class TextElementHelper
 {
     #region Header
 

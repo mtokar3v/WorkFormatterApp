@@ -4,22 +4,22 @@ using Formatter.Utils;
 
 namespace Formatter.FormatterItems.FormattingSteps;
 
-public class SetParagraphFonts : BaseFormatter
+public class SetParagraphFontsStep : BaseFormatterStep
 {
-    public SetParagraphFonts(Body body) : base(body) { }
+    public SetParagraphFontsStep(Body body) : base(body) { }
     public override void Execute()
     {
         Action<Paragraph> formatParagraph = (p) =>
         {
             var paragraphStyleId = p.GetOrCreateParagraphStyleId();
 
-            if (TextTypeChecker.IsHeader(p.InnerText))
+            if (TextElementHelper.IsHeader(p.InnerText))
             {
                 paragraphStyleId.Val = Constants.Style.HeaderTextStyleId;
             }
             else
             {
-                paragraphStyleId.Val = Constants.Style.CommonTextStyleId;
+                paragraphStyleId.Val = Constants.Style.CommonBothTextStyleId;
             }
         };
 

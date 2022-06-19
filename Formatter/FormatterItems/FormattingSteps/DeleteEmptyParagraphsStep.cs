@@ -2,9 +2,9 @@
 
 namespace Formatter.FormatterItems.FormattingSteps
 {
-    public class DeleteEmptyParagraphs : BaseFormatter
+    public class DeleteEmptyParagraphsStep : BaseFormatterStep
     {
-        public DeleteEmptyParagraphs(Body body) : base(body) { }
+        public DeleteEmptyParagraphsStep(Body body) : base(body) { }
 
         public override void Execute() => _body.Elements<Paragraph>()
                 .Where(p => string.IsNullOrWhiteSpace(p.InnerText))

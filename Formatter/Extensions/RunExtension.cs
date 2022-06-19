@@ -1,17 +1,18 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+namespace Formatter.Extensions;
 
-namespace Formatter.Extensions
+public static class RunExtension
 {
-    public static class RunExtension
+    public static Text GetOrCreateText(this Run run)
     {
-        public static Text GetOrCreateText(this Run run)
-        {
-            if (run.Elements<Text>().Count() == 0)
-            {
-                run.PrependChild(new Text());
-            }
+        if (run == null) throw new NullReferenceException(nameof(run));
 
-            return run.GetFirstChild<Text>()!;
+        if (run.Elements<Text>().Count() == 0)
+        {
+            run.PrependChild(new Text());
         }
+
+        return run.GetFirstChild<Text>()!;
     }
 }
+
