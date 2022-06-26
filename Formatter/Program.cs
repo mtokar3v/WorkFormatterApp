@@ -5,14 +5,16 @@ using Formatter.Extensions;
 using Formatter.Factories;
 using Formatter.Factories.Lowercase;
 using Formatter.FormatterItems;
-
+using System.Globalization;
 namespace WorkFormatter.Program;
 
 public class Program
 {
     public static void Main()
     {
-        var path = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"simpleTable2.docx");
+        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB");
+
+        var path = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"FontFormattingTest.docx");
         var testNumber = new DirectoryInfo(Constants.NeedRemoveToConfig.PathToTestFile).GetFiles().Length - 1;
         var pathForEditedFile = Path.Combine(Constants.NeedRemoveToConfig.PathToTestFile, $"TableTesting_{testNumber}_{Guid.NewGuid()}.docx");
 
